@@ -13,12 +13,105 @@ nějaká super tabulka na všechny ty kombinace (bez závislosti na pořadí, tz
 tabulka na rozdíly kombinací 4,5,6
 
 pořadí výběru tasků (tedy jejich rozložení na desce) dělá rozdíly, ale ne příliš velké
-\subsection{Výběr kočiček?}
-\todo[inline,color=blue!40]{Jsem schopná kontrolovat tvar vzoru?}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}%
+    \hline
+    \bfseries Kombinace & \bfseries Průměrné skóre% specify table head
+    \\\hline
+    \csvreader[head to column names, separator=semicolon,
+    late after line=\\,
+    late after last line=\\\hline]
+    {./tabulky/testTasks.csv}{}% use head of csv as column names
+    { \tasks & \averageScore}% specify your coloumns here
+\end{tabular}
+\caption{Porovnání výsledků pro různé kombinace úkolových dílků}
+\end{table}
 
+\begin{table}[h!]
+\centering
+\begin{minipage}{.45\linewidth}
+\centering
+\begin{tabular}{|c|c|}%
+    \hline
+    \bfseries Kombinace & \bfseries Průměrné skóre% specify table head
+    \\\hline
+    \csvreader[head to column names, separator=semicolon,
+    late after line=\\,
+    late after last line=\\\hline]
+    {./tabulky/testTasks123.csv}{}% use head of csv as column names
+    {\tasks & \score}% specify your coloumns here
+\end{tabular}
+\end{minipage}
+\begin{minipage}{.45\linewidth}
+\centering
+\begin{tabular}{|c|c|}%
+    \hline
+    \bfseries Kombinace & \bfseries Průměrné skóre% specify table head
+    \\\hline
+    \csvreader[head to column names, separator=semicolon,
+    late after line=\\,
+    late after last line=\\\hline]
+    {./tabulky/testTasks235.csv}{}% use head of csv as column names
+    {\tasks & \score}% specify your coloumns here
+\end{tabular}
+\end{minipage}
+\caption{Porovnání různých umístění kombinací s nejhoršími výsledky}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\begin{tabular}{|c|c|}%
+    \hline
+    \bfseries Kombinace & \bfseries Průměrné skóre% specify table head
+    \\\hline
+    \csvreader[head to column names, separator=semicolon,
+    late after line=\\,
+    late after last line=\\\hline]
+    {./tabulky/testTasks146.csv}{}% use head of csv as column names
+    {\tasks & \score}% specify your columns here
+\end{tabular}
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+\centering
+\begin{tabular}{|c|c|}%
+    \hline
+    \bfseries Kombinace & \bfseries Průměrné skóre% specify table head
+    \\\hline
+    \csvreader[head to column names, separator=semicolon,
+    late after line=\\,
+    late after last line=\\\hline]
+    {./tabulky/testTasks456.csv}{}% use head of csv as column names
+    {\tasks & \score}% specify your columns here
+\end{tabular}
+\end{minipage}
+\caption{Porovnání různých umístění kombinací s nejlepšími výsledky}
+\end{table}
+
+\vspace{5pt}
+
+\todo[inline, color=blue!40]{výběr desky? 4 možnosti}
 
 \section{Porovnání výsledků pro hru jednoho hráče}
 porovnání v single oproti random a lidskému hráči
+
+\begin{table}[h!]
+\centering
+
+\begin{tabular}{|c|c|c|c|c|c|}%
+    \hline
+    \bfseries Agent & \bfseries Skóre & \bfseries Knoflíky & \bfseries Kočky & \bfseries Max & \bfseries Min
+    \\\hline
+    \csvreader[head to column names, separator=semicolon,
+    late after line=\\,
+    late after last line=\\\hline]
+    {./tabulky/testAll.csv}{}% use head of csv as column names
+    { \agent & \averageScore & \buttons & \cats & \best & \lowest}% specify your coloumns here
+\end{tabular}
+\caption{Porovnání agentů ve hře pro jednoho hráče}
+\end{table}
 
 \section{Porovnání výsledků pro hru více hráčů}
 porovnání multi oproti random hráči
