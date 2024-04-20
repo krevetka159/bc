@@ -15,15 +15,15 @@ tabulka na rozdíly kombinací 4,5,6
 pořadí výběru tasků (tedy jejich rozložení na desce) dělá rozdíly, ale ne příliš velké
 \begin{table}[h!]
 \centering
-\begin{tabular}{|c|c|}%
+\begin{tabular}{|c|c|c|c|c|c|}%
     \hline
-    \bfseries Kombinace & \bfseries Průměrné skóre% specify table head
+    \bfseries Kombinace & \bfseries Deska 1 & \bfseries Deska 2 & \bfseries Deska 3 & \bfseries Deska 4 & \bfseries Průměr% specify table head
     \\\hline
     \csvreader[head to column names, separator=semicolon,
     late after line=\\,
     late after last line=\\\hline]
-    {./tabulky/testTasks.csv}{}% use head of csv as column names
-    { \tasks & \averageScore}% specify your coloumns here
+    {./tabulky/testSetting.csv}{}% use head of csv as column names
+    {\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi}% specify your columns here
 \end{tabular}
 \caption{Porovnání výsledků pro různé kombinace úkolových dílků}
 \end{table}
@@ -108,7 +108,7 @@ porovnání v single oproti random a lidskému hráči
     late after line=\\,
     late after last line=\\\hline]
     {./tabulky/testAll.csv}{}% use head of csv as column names
-    { \agent & \averageScore & \buttons & \cats & \best & \lowest}% specify your coloumns here
+    {\agent & \averageScore & \buttons & \cats & \best & \lowest}% specify your coloumns here
 \end{tabular}
 \caption{Porovnání agentů ve hře pro jednoho hráče}
 \end{table}
