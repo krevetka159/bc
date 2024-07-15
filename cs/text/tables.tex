@@ -1,0 +1,543 @@
+
+% Porovnání různých nastavení hry
+\newcommand{\tableSettings}{
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{c|cccc|c} 
+\hline
+\textbf{Úkolové dílky} & \textbf{Deska 1} & \textbf{Deska 2} & \textbf{Deska 3} & \textbf{Deska 4} & \textbf{Průměr}  \\ 
+\hline
+2,3,5                  & 45,678           & 45,710           & 45,620           & 45,719           & 45,682           \\
+1,2,3                  & 46,048           & 45,961           & 46,038           & 46,042           & 46,022           \\
+2,3,6                  & 46,808           & 46,880           & 46,834           & 46,910           & 46,858           \\
+2,3,4                  & 47,270           & 47,210           & 47,262           & 47,303           & 47,261           \\
+1,3,5                  & 47,329           & 47,346           & 47,384           & 47,395           & 47,363           \\
+1,2,5                  & 47,565           & 47,523           & 47,472           & 47,490           & 47,512           \\
+1,3,6                  & 48,297           & 48,286           & 48,293           & 48,212           & 48,272           \\
+3,5,6                  & 48,357           & 48,331           & 48,289           & 48,345           & 48,331           \\
+1,2,6                  & 48,372           & 48,451           & 48,447           & 48,460           & 48,433           \\
+2,5,6                  & 48,446           & 48,393           & 48,457           & 48,476           & 48,443           \\
+3,4,5                  & 49,185           & 49,179           & 49,237           & 49,208           & 49,202           \\
+1,3,4                  & 49,232           & 49,217           & 49,272           & 49,247           & 49,242           \\
+2,4,5                  & 49,375           & 49,233           & 49,284           & 49,194           & 49,271           \\
+1,5,6                  & 49,427           & 49,367           & 49,393           & 49,442           & 49,407           \\
+1,2,4                  & 49,473           & 49,338           & 49,380           & 49,467           & 49,415           \\
+3,4,6                  & 49,879           & 49,885           & 49,827           & 49,914           & 49,876           \\
+2,4,6                  & 49,942           & 49,884           & 49,928           & 49,956           & 49,927           \\
+1,4,5                  & 50,839           & 50,794           & 50,850           & 50,863           & 50,836           \\
+4,5,6                  & 51,045           & 51,106           & 51,119           & 51,081           & 51,088           \\
+1,4,6                  & 51,199           & 51,203           & 51,237           & 51,155           & 51,198           \\
+\hline
+\end{tabular}
+\caption{Porovnání výsledků pro různá nastavení herní desky}
+\label{tab:SettingsAll}
+\end{table}
+}
+
+% Detailní porovnání nastavení s nejnižším skóre
+\newcommand{\tableSettingsDetailWorst}{
+\begin{table}[H]
+\centering
+\begin{minipage}{.3\linewidth}
+\centering
+\begin{tabular}{c c} 
+\hline
+\textbf{Úkoly} & \textbf{Skóre}  \\ 
+\hline
+2,3,5                  & 45,285                   \\
+3,2,5                  & 45,619                   \\
+2,5,3                  & 45,709                   \\
+5,3,2                  & 45,812                   \\
+5,2,3                  & 45,853                   \\
+3,5,2                  & 45,858                   \\
+\hline
+\end{tabular}
+
+\end{minipage}
+\begin{minipage}{.3\linewidth}
+\centering
+\begin{tabular}{c c} 
+\hline
+\textbf{Úkoly} & \textbf{Skóre}  \\ 
+\hline
+2,3,1                  & 44,348                   \\
+3,2,1                  & 44,614                   \\
+2,1,3                  & 46,295                   \\
+3,1,2                  & 46,459                   \\
+1,2,3                  & 47,025                   \\
+1,3,2                  & 47,133                   \\
+\hline
+\end{tabular}
+
+\end{minipage}
+\begin{minipage}{.3\linewidth}
+\centering
+\begin{tabular}{c c} 
+\hline
+\textbf{Úkoly} & \textbf{Skóre}  \\ 
+\hline
+2,6,3                  & 46,507                   \\
+3,6,2                  & 46,735                   \\
+2,3,6                  & 46,866                   \\
+6,3,2                  & 46,951                   \\
+3,2,6                  & 46,978                   \\
+6,2,3                  & 47,194                   \\
+\hline
+\end{tabular}
+
+\end{minipage}
+
+\caption{Porovnání různých umístění kombinací s nejhoršími výsledky}
+\label{tab:SettingsDetailWorst}
+\end{table}
+}
+
+% Detailní porovnání nastavení s nejvyšším skóre
+\newcommand{\tableSettingsDetailBest}{
+\begin{table}[H]
+\centering
+\begin{minipage}{.3\linewidth}
+\centering
+\begin{tabular}{c c} 
+\hline
+\textbf{Úkoly} & \textbf{Skóre}  \\ 
+\hline
+4,5,1                  & 50,029                   \\
+5,4,1                  & 50,064                   \\
+4,1,5                  & 50,878                   \\
+1,4,5                  & 51,135                   \\
+5,1,4                  & 51,328                   \\
+1,5,4                  & 51,754                   \\
+\hline
+\end{tabular}
+
+\end{minipage}
+\begin{minipage}{.3\linewidth}
+\centering
+\begin{tabular}{c c} 
+\hline
+\textbf{Úkoly} & \textbf{Skóre}  \\ 
+\hline
+6,4,1                  & 50,211                   \\
+4,6,1                  & 50,588                   \\
+6,1,4                  & 50,837                   \\
+1,6,4                  & 51,710                   \\
+4,1,6                  & 51,712                   \\
+1,4,6                  & 51,850                   \\
+\hline
+\end{tabular}
+
+\end{minipage}
+\begin{minipage}{.3\linewidth}
+\centering
+\begin{tabular}{c c} 
+\hline
+\textbf{Úkoly} & \textbf{Skóre}  \\ 
+\hline
+6,5,4                  & 50,669                   \\
+5,6,4                  & 50,829                   \\
+6,4,5                  & 51,009                   \\
+4,6,5                  & 51,098                   \\
+4,5,6                  & 51,304                   \\
+5,4,6                  & 51,370                   \\
+\hline
+\end{tabular}
+
+\end{minipage}
+\caption{Porovnání různých umístění kombinací s nejlepšími výsledky}
+\label{tab:SettingsDetailBest}
+\end{table}
+}
+
+% Porovnání jednokrokových agentů - skóre
+\newcommand{\tableOneStepAgentsScore}{
+\begin{table}[H]
+\small
+\centering
+\begin{tabular}{l|c c c} 
+\hline
+\textbf{Agent} & \textbf{Průměrné skóre} & \textbf{Maximum} & \textbf{Minimum}  \\ 
+\hline
+RAND                 & 14,607                  & 45               & 0                 \\
+základ - barvy       & 32,503                  & 62               & 15                \\
+základ - vzory       & 31,305                  & 57               & 11                \\
+základ - vše         & 45,338                  & 71               & 18                \\
+rozšířená funkce     & \textbf{48,532}         & 71               & 20                \\
+RAND s p=0,05       & 47,145                  & 71               & 20                \\
+\hline
+\end{tabular}
+\caption{Porovnání výsledků jednokrokových agentů}
+\label{tab:OneStepScores}
+\end{table}
+}
+
+% Porovnání jednokrokových agentů - zisk žetonů
+\newcommand{\tableOneStepAgentsDetailButtonsCats}{
+\begin{table}[H]
+\small
+\centering
+\begin{tabular}{l|cccc} 
+\hline
+\textbf{Agent}       & \textbf{Knoflíky} & \textbf{Kočky (3b.)} & \textbf{Kočky (4b.)} & \textbf{Kočky (5b.)}  \\ 
+\hline
+RAND                 & 2,375             & 0,821                & 0,264                & 0,083                 \\
+základ - barvy       & 8,243             & 0,808                & 0,248                & 0,077                 \\
+základ - vzory       & 2,308             & 2,743                & 1,386                & 0,792                 \\
+základ - vše         & 6,532             & 2,147                & 0,908                & 0,390                 \\
+rozšířená funkce     & 5,697             & 1,963                & 0,979                & 0,500                 \\
+RAND s p=0,05      & 5,575             & 1,906                & 0,955                & 0,478                 \\
+\hline
+\end{tabular}
+\caption{Porovnání počtu získaných žetonů jednokrokových agentů}
+\label{tab:OneStepButtonsCats}
+\end{table}
+}
+
+\newcommand{\tableOneStepAgentsDetailTasks}{
+\begin{table}[H]
+\small
+\centering
+\begin{tabular}{l|cccccc} 
+\hline
+\textbf{Agent} & \textbf{Úkol 1} & \textbf{Úkol 2} & \textbf{Úkol 3} & \textbf{Úkol 4} & \textbf{Úkol 5} & \textbf{Úkol 6}  \\ 
+\hline
+RAND                 & 0,040           & 0,018           & 0,009           & 0,277           & 0,077           & 0,708            \\
+základ - barvy       & 0,022           & 0,015           & 0,015           & 0,354           & 0,143           & 0,737            \\
+základ - vzory       & 0,016           & 0,040           & 0,032           & 0,451           & 0,104           & 0,647            \\
+základ - vše         & 0,243           & 0,331           & 0,290           & 1,089           & 0,680           & 1,334            \\
+rozšířená funkce     & 0,828           & 0,604           & 0,522           & 1,103           & 0,787           & 1,264            \\
+RAND s p=0,05      & 0,799           & 0,572           & 0,487           & 1,097           & 0,746           & 1,260            \\
+\hline
+\end{tabular}
+\caption{Porovnání počtu splněných úkolů pro jednokrokové agenty}
+\label{tab:OneStepTasks}
+\end{table}
+}
+
+% Porovnání stromového prohledávání pro 2 nebo 3 dílky  s různým discount factorem
+\newcommand{\tableTreeSearchScoreTest}{
+\begin{table}[H]
+\centering
+\begin{tabular}{l|cc} 
+\hline
+\multicolumn{1}{c|}{\textbf{Discount}} & \multicolumn{2}{c}{\textbf{Skóre}}                                \\
+\multicolumn{1}{c|}{\textbf{faktor}}                                   & \textbf{Hloubka 2}                         & \textbf{Hloubka 3}                          \\ 
+\hline
+0,1                                & 50,685                     & 50,883                      \\
+0,25                               & 51,061                     & 51,268                      \\
+0,5                                & 51,497                     & 51,837                      \\
+0,75                               & 51,781                     & 52,101                      \\
+0,8                                & 51,734                     & 52,264                      \\
+0,9                                & 51,647                     & 52,393                      \\
+0,95                               & 51,699                     & 52,199                      \\
+1                                  & 49,816                     & 49,315                      \\
+\hline
+\end{tabular}
+\caption{Porovnání výsledků pro různé hodnoty discount faktoru a hloubky stromu}
+\label{tab:testTS}
+\end{table}
+}
+
+% Porovnání nejlepšího nastavení stromového prohledávání s jednokrokovým váženým rozšířeným ohodnocováním
+\newcommand{\tableTreeSearchDetailScore}{
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lccc} 
+\hline
+\textbf{Použití funkce} & \textbf{Skóre} & \textbf{Max} & \textbf{Min} \\ 
+\hline
+jednokrokově                    & 49,498               & 76              &  23                 \\
+ve stromovém prohledávání       & 52,393               & 77              &  25                 \\
+\hline
+\end{tabular}
+\caption{Porovnání skóre při použití vážené rozšířené funkce jednokrokově a ve stromovém prohledávání}
+\label{tab:TSscore}
+\end{table}
+}
+
+% Porovnání nejlepšího nastavení stromového prohledávání s jednokrokovým váženým rozšířeným ohodnocováním
+\newcommand{\tableTreeSearchDetailButtonsCats}{
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccc} 
+\hline
+\textbf{Použití funkce} & \textbf{Knoflíky} & \textbf{Kočky (3b.)} & \textbf{Kočky (4b.)} & \textbf{Kočky (5b.)}  \\ 
+\hline
+jednokrokově                    & 5,790                 & 2,093                     & 1,042                     & 0,528                      \\
+ve stromovém prohledávání       & 6,065                 & 2,182                     & 1,125                     & 0,599                      \\
+\hline
+\end{tabular}
+\caption{Porovnání počtu získaných žetonů při použití vážené rozšířené funkce jednokrokově a ve stromovém prohledávání}
+\label{tab:TSZetony}
+\end{table}
+}
+
+% Porovnání stromového prohledávání pro 2 nebo 3 dílky - úkoly
+\newcommand{\tableTreeSearchDetailTasks}{
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccccc} 
+\hline
+\textbf{Použití funkce} & \textbf{Úkol 1} & \textbf{Úkol 2} & \textbf{Úkol 3} & \textbf{Úkol 4} & \textbf{Úkol 5} & \textbf{Úkol 6}  \\ 
+\hline
+jednokrokově                             & 0,840           & 0,609           & 0,608           & 1,035           & 0,746           & 1,173                \\
+ve stromovém prohledávání                & 0,863           & 0,635           & 0,640           & 1,105           & 0,830           & 1,259                \\
+\hline
+\end{tabular}
+\caption{Porovnání splněných úkolů při použití vážené rozšířené funkce jednokrokově a ve stromovém prohledávání}
+\label{tab:TSTasks}
+\end{table}
+}
+
+% Porovnání MCTS pro různé počty simulací
+\newcommand{\tableMCTSScore}{
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lllll} 
+\hline
+\textbf{Velikost simulace} & \textbf{Skóre} &\textbf{Max} &\textbf{Min} \\ 
+\hline
+5                          & 52,895         &  75         &  21                  \\
+10                         & 55,404         &  75         &  29                  \\
+25                         & 56,944         &  73         &  34                  \\
+50                         & 57,312         &  72         &  37                  \\
+75                         & 58,168         &  73         &  41                  \\
+\hline
+\end{tabular}
+\caption{Porovnání výsledků pro různé počty her v simulaci}
+\label{tab:MCTSSimulace}
+\end{table}
+
+}
+
+% Porovnání MCTS pro různé omezení větvení pro 5 her v simulaci
+\newcommand{\tableMCTSBranching}{
+\begin{table}[H]
+\centering
+\begin{tabular}{lllll} 
+\hline
+\textbf{Omezení větvení} & \textbf{Skóre} &\textbf{Max} &\textbf{Min} \\ 
+\hline
+5                          & 52,895         &  75         &  21                  \\
+max((prazdne+1)/2,5)       & 52,908         &  72         &  22                  \\
+
+\hline
+\end{tabular}
+\caption{Porovnání výsledků pro různé omezení větvení}
+\label{tab:MCTSBranching}
+\end{table}
+}
+
+% Porovnání MCTS pro různé počty simulací
+\newcommand{\tableMCTSDetailScore}{
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lccc} 
+\hline
+\textbf{Stromové prohledávání} & \textbf{Skóre} & \textbf{Max} & \textbf{Min} \\ 
+\hline
+bez simulací                   & 52,393               & 77              &  25                 \\
+se simulacemi                  & 58,168               & 73              &  41                 \\
+\hline
+\end{tabular}
+\caption{Porovnání skóre pro stromové prohledávání}
+\label{tab:MCTSscore}
+\end{table}
+}
+
+% Porovnání MCTS pro různé počty simulací
+\newcommand{\tableMCTSDetailButtonsCats}{
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccc} 
+\hline
+\textbf{Stromové prohledávání} & \textbf{Knoflíky} & \textbf{Kočky (3b.)} & \textbf{Kočky (4b.)} & \textbf{Kočky (5b.)}  \\ 
+\hline
+bez simulací       & 6,065                 & 2,182                     & 1,125                     & 0,599                      \\
+se simulacemi      & 6,656                 & 2,228                     & 1,312                     & 0,824                      \\
+\hline
+\end{tabular}
+\caption{Porovnání počtu získaných žetonů pro stromové prohledávání}
+\label{tab:MCTSZetony}
+\end{table}
+}
+
+% Porovnání MCTS pro různé počty simulací
+\newcommand{\tableMCTSDetailTasks}{
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccccc} 
+\hline
+\textbf{Stromové prohledávání} & \textbf{Úkol 1} & \textbf{Úkol 2} & \textbf{Úkol 3} & \textbf{Úkol 4} & \textbf{Úkol 5} & \textbf{Úkol 6}  \\ 
+\hline
+bez simulací                & 0,863           & 0,635           & 0,640           & 1,105           & 0,830           & 1,259                \\
+se simulacemi               & 0,835           & 0,608           & 0,545           & 1,444           & 1,035           & 1,504                \\
+\hline
+\end{tabular}
+\caption{Porovnání splněných úkolů pro stromové prohledávání}
+\label{tab:MCTSTasks}
+\end{table}
+}
+
+% Porovnání vah pro různá umístění stejných tasků
+\newcommand{\tableEvolDetail}{
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{c|c c c c c c c}
+\hline
+\multirow{2}{*}{\textbf{Úkoly}} & \multicolumn{7}{c}{\textbf{Váhy}} \\ 
+& \textbf{Barva} & \textbf{Vzor(3b)} & \textbf{Vzor(4b)} & \textbf{Vzor(5b)} & \textbf{Úkol 1} & \textbf{Úkol 2} & \textbf{Úkol 4} \\ 
+\hline
+1,2,4                           & 0,933             & 1,129               & 0,998               & 0,990               & 1,218           & 1,134           & 0,597 \\
+1,4,2                           & 0,976             & 1,152               & 1,027               & 1,031               & 1,077           & 1,098           & 0,640 \\
+2,1,4                           & 0,971             & 1,220               & 1,073               & 1,024               & 1,109           & 1,055           & 0,548 \\
+2,4,1                           & 0,985             & 1,213               & 1,017               & 0,927               & 1,173           & 1,113           & 0,572 \\
+4,1,2                           & 0,955             & 1,190               & 1,020               & 0,997               & 1,153           & 1,115           & 0,571 \\
+4,2,1                           & 0,895             & 1,167               & 1,052               & 0,964               & 1,186           & 1,097           & 0,639 \\
+\hline
+\end{tabular}
+\caption{Výsledné váhy pro kombinaci úkolů 1, 2 a 4}
+\label{tab:evolDetail124}
+\end{table}
+}
+
+\newcommand{\tableEvolDetailTwo}{
+\begin{table}
+\centering
+\begin{tabular}{c|c c c c c c c} 
+\hline
+\multirow{2}{*}{\textbf{Úkoly}} & \multicolumn{7}{c}{\textbf{Váhy}}                                                                                                 \\
+                                & \textbf{Barva} & \textbf{Vzor(3b)} & \textbf{Vzor(4b)} & \textbf{Vzor(5b)} & \textbf{Úkol 1} & \textbf{Úkol 5} & \textbf{Úkol 6}  \\ 
+\hline
+1,5,6                           & 1,038          & 1,154             & 1,083             & 0,999             & 1,159           & 0,924           & 0,643            \\
+1,6,5                           & 0,929          & 1,133             & 0,972             & 0,934             & 1,155           & 1,002           & 0,875            \\
+5,1,6                           & 1,073          & 1,059             & 1,000             & 0,962             & 1,346           & 0,898           & 0,661            \\
+5,6,1                           & 0,894          & 1,126             & 1,045             & 0,899             & 1,113           & 1,052           & 0,870            \\
+6,1,5                           & 1,064          & 0,987             & 0,941             & 0,877             & 1,249           & 1,059           & 0,823            \\
+6,5,1                           & 1,018          & 0,999             & 1,021             & 0,974             & 0,995           & 0,942           & 1,051            \\
+\hline
+\end{tabular}
+\caption{Výsledné váhy pro kombinaci úkolů 1, 5 a 6}
+\end{table}
+}
+
+% Porovnání skóre s váženou ohodnocující fcí proti nevážené fci
+\newcommand{\tableEvolScore}{
+\begin{table}[H]
+\centering
+\begin{tabular}{c|l|l|l} 
+\hline
+\textbf{Úkolové dílky} & \textbf{Nevážená funkce} & \textbf{Vážená funkce} & \textbf{Zlepšení}  \\ 
+\hline
+1,2,3                  & 46,049                   & 46,643                 & 0,594              \\
+1,2,4                  & 49,509                   & 50,561                 & 1,052              \\
+1,2,5                  & 47,521                   & 48,113                 & 0,593              \\
+1,2,6                  & 48,474                   & 48,916                 & 0,443              \\
+1,3,4                  & 49,228                   & 50,501                 & 1,274              \\
+1,3,5                  & 47,323                   & 47,965                 & 0,642              \\
+1,3,6                  & 48,307                   & 48,863                 & 0,556              \\
+1,4,5                  & 50,865                   & 51,656                 & 0,791              \\
+1,4,6                  & \textbf{51,219}          & 51,905                 & 0,686              \\
+1,5,6                  & 49,414                   & 49,808                 & 0,394              \\
+2,3,4                  & 47,224                   & 49,284                 & \textbf{2,060}     \\
+2,3,5                  & 45,726                   & 46,764                 & 1,038              \\
+2,3,6                  & 46,872                   & 47,932                 & 1,060              \\
+2,4,5                  & 49,197                   & 50,501                 & 1,303              \\
+2,4,6                  & 49,848                   & 51,282                 & 1,434              \\
+2,5,6                  & 48,432                   & 49,170                 & 0,738              \\
+3,4,5                  & 49,151                   & 50,581                 & 1,430              \\
+3,4,6                  & 49,874                   & 51,227                 & 1,352              \\
+3,5,6                  & 48,421                   & 49,133                 & 0,712              \\
+4,5,6                  & 51,120                   & \textbf{52,403}        & 1,283              \\ 
+\hline
+\textbf{průměr}        & \textbf{48,689}          & \textbf{49,660}        & \textbf{0,972} \\
+\hline
+\end{tabular}
+\caption{Výsledky vážené funkce pro jednotlivé kombinace úkolů}
+\label{tab:weightedScoreAll}
+\end{table}
+}
+
+\newcommand{\tableWeightedDetailScore}{
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lccc} 
+\hline
+\textbf{Rozšířená funkce} & \textbf{Skóre} & \textbf{Max} & \textbf{Min} \\ 
+\hline
+nevážená                & 48,532         & 71               & 20                 \\
+vážená                  & 49,498         & 76               & 23                 \\
+\hline
+\end{tabular}
+\caption{Porovnání skóre pro váženou funkci}
+\label{tab:weightedScore}
+\end{table}
+}
+
+% Porovnání MCTS pro různé počty simulací
+\newcommand{\tableWeightedDetailButtonsCats}{
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccc} 
+\hline
+\textbf{Rozšířená funkce} & \textbf{Knoflíky} & \textbf{Kočky (3b.)} & \textbf{Kočky (4b.)} & \textbf{Kočky (5b.)}  \\ 
+\hline
+nevážená       & 5,697             & 1,963                & 0,979                & 0,500                      \\
+vážená         & 5,790                 & 2,093                     & 1,042                     & 0,528                      \\
+\hline
+\end{tabular}
+\caption{Porovnání počtu získaných žetonů pro váženou funkci}
+\label{tab:weightedZetony}
+\end{table}
+}
+
+% Porovnání MCTS pro různé počty simulací
+\newcommand{\tableWeightedDetailTasks}{
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccccc} 
+\hline
+\textbf{Rozšířená funkce} & \textbf{Úkol 1} & \textbf{Úkol 2} & \textbf{Úkol 3} & \textbf{Úkol 4} & \textbf{Úkol 5} & \textbf{Úkol 6}  \\ 
+\hline
+nevážená                & 0,828           & 0,604           & 0,522           & 1,103           & 0,787           & 1,264                \\
+vážená                  & 0,840           & 0,609           & 0,608           & 1,035           & 0,746           & 1,173                \\
+\hline
+\end{tabular}
+\caption{Porovnání splněných úkolů pro váženou funkci}
+\label{tab:weightedTasks}
+\end{table}
+}
+
+% Deviation pro různé počty her
+\newcommand{\tableDeviation}{
+\begin{table}[H]
+\centering
+\begin{tabular}{cc}
+\hline
+\textbf{Počet her} & \textbf{Odchylka v průměrných výsledcích}  \\
+\hline
+100       & 0,733                \\
+250       & 0,448                \\
+500       & 0,336                \\
+750       & 0,252                \\
+1000      & 0,224                \\
+2500      & 0,140                \\
+5000      & 0,106              \\
+\hline
+\end{tabular}
+\caption{Odchylky od průměrného skóre pro různé počty her}
+\label{tab:deviation}
+\end{table}
+}

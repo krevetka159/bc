@@ -1,0 +1,32 @@
+\chapter{Programátorská dokumentace}
+
+
+\section{Objektový návrh}
+
+Obrázek jak spolu interagují jednotlivé třídy (diagram).
+
+\section{Hlavní komponenty}
+\subsection{Game}
+Samotná hra je reprezentovaná třídou Game, která obsahuje instanci hráče (lidského nebo počítačového), instanci třídy Bag, která implementuje množinu všech herních dílků ve hře, a nabídku dílků k přiložení. Třída Game obstarává celý průběh hry. Pro zobrazení stavu hry využívá instanci třídy GameStatePrinter. 
+
+Ze třídy Game dědí třída SimulationGame, která reprezentuje běh simulaci hry ve stromovém prohledávání od určitého stavu do konce.
+
+\subsection{Player}
+Třída Player reprezentuje hráče. Obsahuje instanci třídy GameBoard a metody, které obstarávají výběr dalšího tahu.
+Z této třídy dědí třída Agent, která navíc implementuje metody na náhodný výběr dílku a pozice pro další tah.
+Z třídy Agent dále dědí všechny třídy implementující agenty.
+
+\subsection{GameBoard}
+Třída GameBoard spravuje herní pole. Herní deska je inicializovaná s okraji, které se rovněž počítají při spojování dílků do clusterů se stejnými vlastnostmi.
+Obsahuje metody pro kontrolu sousedních polí a vyhodnocení užitku přidání herního dílku na určitou pozici na herní desce, které jsou používané agenty při vyhodnocování akcí v rámci jejich strategie. Třída obsahuje instanci třídy ScoreCounter, která je zodpovědná za průběžné počítání skóre ve hře.
+
+\subsection{Evolution}
+Třída Evolution obstarává celý běh evolučního algoritmu. Obsahuje metody pro základní části evolučního algoritmu, tedy inicializaci generace, mutaci, selekci a výpočet hodnoty fitness. Jedinec je instancí třídy Weights. 
+
+\section{Počítání skóre}
+\subsection{Využití UnionFind}
+
+Union Find pro barvy a vzory, úkolové dílky jsou vyhodnocovány samotnými úkolovými dílky, které si uchovávají seznam dílků, které s nimi sousedí.
+\textbf{ozdrojovat průvodce}
+
+\section{Implementace strategií agentů}

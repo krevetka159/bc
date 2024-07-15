@@ -59,6 +59,12 @@
 
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{csvsimple}
+\usepackage{rotating}
+\usepackage{geometry}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{pgfplots}
 
 %%% Údaje o práci
 
@@ -135,14 +141,22 @@ Abstract.
 
 \listoftodos
 
-%%% Jednotlivé kapitoly práce jsou pro přehlednost uloženy v samostatných souborech
-\include{text/uvod}
+\input{cs/text/figures}
+\input{cs/text/tables}
 
-\include{text/kap01}
-\include{text/kap02}
-\include{text/kap03}
-\include{text/kap04}
-\include{text/kap05}
+\nocite{*}
+
+%%% Jednotlivé kapitoly práce jsou pro přehlednost uloženy v samostatných souborech
+\include{text/00uvod}
+
+\include{cs/text/01pravidla}
+\include{cs/text/02analyza}
+\include{cs/text/03pole}
+\include{cs/text/04agenti}
+\include{cs/text/05vysledky}
+\include{cs/text/06userdoc}
+\include{cs/text/07devdoc}
+% \include{cs/text/tabulky}
 
 \include{text/zaver}
 

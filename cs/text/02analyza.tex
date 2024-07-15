@@ -1,0 +1,77 @@
+\chapter{Analýza hry}
+
+\section{Vlastnosti hry}
+
+Pro verzi hry pro jednoho hráče je důležitá vlastnost konečnosti, hra má předem daný počet tahů, které hráč může provést, který odpovídá počtu volných políček na herní desky. Hráč má tedy v průběhu hry k dispozici 22 tahů.
+
+Nabídka herních dílků pro každý tah není předem známý, hráč tedy zná všechny proveditelné kroky pouze pro aktuální tah. 
+
+Ve verzi pro více hráčů se mnou implementovaným rozšířením se jedná o hru s úplnou informací, to znamená, že všichni hráči mají stejné informace o hře. Pro strategii hráčů to znamená, že mohou uvažovat i akce, které ublíží jejich protihráčům.
+
+Hra je sekvenční, tedy v každém kole se na tahu hráči vystřídají v předem stanoveném pořadí. 
+
+Calico je hra s nenulovým součtem, což znamená, že zisky a ztráty jednotlivých hráčů nejsou přesně vyvážené. Zisk bodů jednoho hráče neznamená, že jiný hráč o body přichází.
+
+\textbf{Vzájemná interakce hráčů ve hře}
+
+
+\section{Herní strategie}
+
+Strategie hráče definuje jeho rozhodování, kterou akci provést ve jakémkoliv stavu hry. Strategie ve stavu hry je funkce, která vrací akce, které hráč může v daném stavu provést v souladu s jeho strategií.
+
+
+\subsection{Hladový přístup}
+
+Agent v každém kroku hry vybere nejlepší právě teď, nezohledňuje, jak daná akce ovlivní další akce. V každém kroků tedy vybíráme lokálně nejlepší možnost, tím se však můžeme připravit o vyšší výsledné skóre ve hře.
+
+\subsection{Stromová reprezentace hry}
+
+Stavový prostor hry lze reprezentovat stromovým grafem. Vrcholy grafu odpovídají různým stavům hry a hrany mezi vrcholy odpovídají akcím, kterými lze mezi vrcholy přecházet. 
+
+Stromová reprezentace hry je často používaná zejména u her pro 2 hráče, kteří se střídají na tahu. Akce hráčů se střídají po hladinách. Na obrázku xy můžeme vidět část stromové reprezentace hry TicTacToe. Listy stromu odpovídají koncovým stavům, tedy stavům, na které již nelze aplikovat žádné akce. Při dosažení koncového stavu je každému hráči přiděleno ohodnocení, které odpovídá jeho zisku nebo ztrátě ve hře (jeho herní výsledek). Takové ohodnocení může být ukazatelem prohry/výhry nebo počtem bodů, kterého hráč ve hře dosáhl. \citep{millington2016artificial}
+
+Stromovou reprezentaci lze však využít i pro hru jednoho hráče. Pro aktuální stav vybudujeme stromovou reprezentaci možných budoucích kroků a zvolíme takovou posloupnost akcí, která vede k nejlépe ohodnocenému koncovému stavu. 
+
+Jeden z největších problémů této reprezentace je velikost stavového prostoru. Stavy hry se mohou ve stromu opakovat. Pro stavy s mnoha aplikovatelnými akcemi vzniká velké větvení stromu. Pro hry, které nemají pevně daný počet kroků, které agent vykoná, můžeme dostat strom s velkou nebo dokonce nekonečnou hloubkou. Vyhodnocení takového stromu tedy bude prostorově i časově náročné.
+
+Velké větvení i hloubku stromu lze omezit pomocí heuristické funkce, pomocí které ohodnotím každý vrchol stromu tak, aby ohodnocení odpovídalo tomu, nakolik přechod do daného stavu přispěje k výsledku hráče. Pomocí této heuristiky můžeme předpovídat, které větve pravděpodobněji dosáhnou lepších výsledků, a na základě toho zahazovat ostatní větve. Tento přístup je označován jako ořezávání stromu. Dále je s touto heuristikou možné omezit hloubku stromu na pevně daný počet kroků a místo ohodnocení koncového stavu použít pro vyhodnocení větve hodnotu heuristické funkce. Tento přístup může výrazně zlepšit složitost vyhodnocení strategie hráče, ovšem můžeme v rámci ořezávání přijít o nejlepší řešení.
+
+
+
+\subsection{Monte Carlo Tree Search}
+
+Monte Carlo Tree Search (MCTS) je heuristický prohledávací algoritmus často užívaný v rozhodovacích procesech, zejména v teorii her a jiných úlohách, kdy je potřeba prohledávat velký stavový prostor. Algoritmus je schopný provádět informovaná rozhodnutí i v komplexním prostředí s velkou mírou nejistoty.
+
+MCTS využívá metodu Monte Carlo, která pomocí samplování náhodných vzorků z  určité pravděpodobnostní distribuce a využití statistiky vytváří odhady kvantit, které je náročné spočítat. Kromě teorie her se tato metoda využívá např. pro výpočet vícerozměrných integrálů. Ve stromovém prohledávání je tato metoda užitečná pro rozhodování, které stavy je výhodnější prohledávat.
+
+Algoritmus MCTS opakuje následující 4 kroky po předem určenou dobu, nebo dokud nedojde ke splnění nějaké podmínky.
+
+V prvním kroku pomocí heuristické strategie určíme, který vrchol budeme dále prohledávat. Nejběžnější strategií je Upper Confidence Bound for Trees (UCT), která kombinuje hodnotu vrcholu získanou z náhodných simulací následujících kroků a počet navštívení daného vrcholu v průběhu iterací algoritmu. Lze ji vyjádřit následující funkcí:
+\begin{equation}
+    S_i = x_i + c \cdot \sqrt{\frac{\ln(t)}{n_i}}
+\end{equation}
+kde $x_i$ je hodnota vrcholu, $c$ konstanta, $t$ počet iterací algoritmu, $n_i$ počet navštívení vrcholu.
+
+V následujícím kroku vybraný vrchol rozšíříme o potomka.
+
+Pro potomka provedeme simulaci, tedy simulujeme posloupnost náhodných kroků dokud nedojdeme k cíli, nebo nesplníme jiný požadavek k zastavení simulaci (např. pevně určený počet kroků). Hodnota vrcholu je určena hodnotou ze simulace.
+
+Po získaní hodnoty ze simulace aktualizujeme hodnoty všech vrcholů na cestě ke kořeni zpětnou propagací.
+
+
+\subsection{Evoluční algoritmus}
+
+Následující text vznikl podle textu \citep{pilatEvolucniAlgoritmy}.
+Evoluční algoritmy jsou optimalizační algoritmy inspirované biologickou evolucí. Pracujeme s množinou kandidátů na řešení daného problému, těmto kandidátům říkáme jedinci a množinu jedinců označujeme jako populaci. 
+
+Jedna iterace evolučního algoritmu se nazývá generace. V každé generaci algoritmu vyhodnotíme tzv. fitness funkci každého jedince, která určuje, nakolik je řešení problému reprezentované daným jedincem dobré. Generace se typicky skládá z následujících částí.
+
+\subsubsection*{Selekce}
+
+Z aktuální populace potřebujeme vybrat jedince, ze kterých následně vytvoříme jedince pro novou generaci. Takovým jedincům říkáme rodiče, nové populaci pak jejich potomci. Příkladem může být turnajová selekce, kde s pravděpodobností $p_t$ z několika náhodně vybraných jedinců vybereme jako rodiče toho, který má nejlepší hodnotu fitness. 
+
+\subsubsection*{Genetické operátory}
+
+Na rodiče vybrané z aktuální generace dále aplikujeme genetické operátory. 
+Operace křížení kombinuje dva jedince pro vytvoření jedince nového. Příkladem může být jednobodové křížení, kde náhodně vybereme jeden bod v jedinci. Potomek pak vznikne spojením dvou částí různých jedinců (rodičů) rozdělených daným bodem. 
+Operace mutace vytvoří nového jedince tím, že náhodně upraví některé parametry již existujícího jedince, např. vygeneruje náhodnou novou hodnotu pro jeden z evolvovaných parametrů nebo prohodí hodnoty na dvou pozicích. Lze rozlišit mutaci zatíženou, která upravuje stávající hodnoty, a mutace nezatížené, které stávající hodnoty nijak nezohledňují.

@@ -1,0 +1,103 @@
+\chapter{Výsledky}
+
+Veškeré průměrné výsledky jsou počítány jako aritmetický průměr přes 5000 her, pokud není specifikováno jinak. Tento počet jsem zvolila s ohledem na hodnoty odchylek od průměrného skóre pro různé běhy daného počtu her. Tyto hodnoty jsou zobrazeny v tabulce \ref{tab:deviation}. Odchylky jsou počítány přes 200 iterací daného počtu her pro hladového agenta využívajícího neváženou rozšířenou ohodnocující funkci. Pro vyšší počet her než 5000 je možné dosáhnout přesnějších výsledků, ovšem z důvodu doby výpočtu jsme pro testování použili 5000 her.
+
+\tableDeviation
+
+Pro různé strategie porovnávám průměrné skóre agenta, jeho maximální a minimální bodový zisk ve hře a průměrné počty získaných žetonů a splněných úkolů. Každý úkol byl ohodnocen 2, pokud byl splněn kompletně, 1, pokud byl splněn pouze částečně, nebo 0, pokud nebyl splněn.
+
+
+\section{Výsledky jednokrokových agentů}
+
+V tabulce \ref{tab:OneStepScores} jsou znázorněny výsledky pro jednokrokové agenty s výjimkou agenta $A_{W}$. Můžeme si všimnout, že agent zohledňující pouze barvy si vedl lépe než agent zohledňující pouze vzory. Takový výsledek byl očekávaný, jelikož pravidla pro získání žetonů koček jsou pro dvojice vzorů různá, což základní agent nezohledňuje. Průměrné skóre agenta, který uvažuje barvy, vzory i úkoly, je výrazně vyšší, než pro agenty uvažující pouze jeden parametr hodnocení. Oproti tomuto agentovi se agent s rozšířenou funkcí zlepšil v průměrném skóre, v maximálním a minimálním skóre však nikoliv. Zlepšení minimálního dosaženého skóre se dá odůvodnit odchylkou při testování. Taktéž se dá argumentovat u změny maxima a minima pro přidání náhody k agentovi $A_R$. Průměrné skóre se však pro tohoto agenta sníží nezanedbatelně, přidání náhody ani v takto malém množství tedy agentovi při rozhodování spíše škodí.
+
+\tableOneStepAgentsScore
+
+Agenti se velmi liší v počtu žetonů, které jsou schopni ve hře získat. V tabulce \ref{tab:OneStepButtonsCats} vidíme, že maximálních počtů pro získané knoflíky a žetony koček dosahují agenti, kteří jsou zaměření pouze na tyto konkrétní parametry. Z tabulky je zřejmé, že množství žetonů koček, které jsou agenti schopní získat, se snižuje se zvyšujícím se bodovým ohodnocením a tedy i velikostním požadavkem daného žetonu. Takové chování je logické, jelikož velikost desky je omezená a pro hráče je jednodušší získat větší množství žetonů za menší souvislé plochy. Zajímavý je zisk agenta, který přidává náhodné rozhodování do rozšiřující funkce. Tento agent získal větší množství žetonů za souvislé plochy 3 dílků. To si lze opět vysvětlit tím, že vytvořit takto malou plochu náhodou je jednodušší než vytvořit plochu větší.
+
+\tableOneStepAgentsDetailButtonsCats
+
+Počty splněných úkolů jednotlivými agenty v tabulce \ref{tab:OneStepTasks} se pro všechny agenty liší podle čísla úkolu. Pro každého agenta byl nejlépe plněný úkol 6, nejhůře plněný pak byl jeden z úkolů 1, 2 a 3. Nejlépe plnil úkoly agent s rozšířenou ohodnocující funkcí. Lepší výsledek agenta s přidanou náhodou u úkolu 6 lze odůvodnit odchylkou při testování.
+
+\tableOneStepAgentsDetailTasks
+
+Různé hodnoty splnitelnosti jednotlivých úkolů nám mohou napovědět, jak nám může výběr úkolových dílků na začátku hry dopomoci k vyššímu skóre. Splnitelnost dosahuje hodnoty 0,1 nebo 2 podle toho, zda byl úkol nesplněn, splněn pouze částečně nebo splněn pro oba parametry.
+
+
+\section{Analýza nastavení hry}
+
+U agenta s lepší ohodnocující funkcí si lze všimnout, že splnitelnosti různých úkolů nejsou úměrné jejich bodovému ohodnocení. Je tedy na místě otestovat, nakolik výběr úkolových dílků ovlivní průměrné skóre. Ve hře máme k dispozici 6 úkolových dílků a 3 pozice na herní desce, na které lze dílky umístit. To nám dává 120 různých kombinací s ohledem na umístění vybrané trojice úkolů. Pro hráče jsou také k dispozici 4 herní desky, přičemž každá má jiné okraje. 
+
+
+V tabulce \ref{tab:SettingsAll} jsou znázorněny průměrné výsledky agenta pro výběr různých kombinací úkolu bez ohledu na jejich umístění s různými herními deskami. Je vidět, že výběr herní desky změní průměrný výsledek, ovšem neznatelně, dále se výběrem herní desky tedy nebudeme zabývat. Výběr trojice úkolových dílků však vytváří znatelné rozdíly mezi výsledky. 
+
+Úkoly, pro které agent dosahuje lepších výsledků odpovídají průměrným hodnotám, které znázorňují, které úkoly jsou nejčastěji splněné. Tedy kombinace úkolů 4 a 6, které měly nejvyšší hodnoty plnění, dosahují nejlepších výsledků, naopak kombinace úkolů 2 a 3, tedy úkolů s nejnižšími hodnotami, dosahují v porovnání výsledků nejhorších.
+
+\tableSettings
+
+V tabulkách \ref{tab:SettingsDetailWorst} a \ref{tab:SettingsDetailBest} jsou znázorněny výsledky pro konkrétní umístění jednotlivých úkolový dílku z trojice. Úkoly jsou vypsány v pořadí v jakém jsou přidány na herní desku odshora, tedy vzestupně podle řádku herního pole. Některé trojice pro různé umístění dosahují podobných výsledků, pro jiné se výsledky liší více. 
+
+
+\tableSettingsDetailWorst
+\tableSettingsDetailBest
+
+\section{Evoluční algoritmus}
+
+Cílem použití evolučního algoritmu bylo získat optimální váhy pro váženou rozšířenou ohodnocující funkci akcí. Vzhledem k různorodosti výsledků agenta pro různé kombinace úkolových dílků i s ohledem na jejich umístění jsem se pokusila dané váhy optimalizovat pro každou možnost umístění každé kombinace zvlášť. Evoluce ovšem byla velice časově náročná a jak si můžeme všimnout v tabulce \ref{tab:evolDetail124}, váhy pro různé umístění jedné kombinace úkolů nejsou příliš odlišné.
+
+\tableEvolDetail
+
+V tabulce \ref{tab:evolDetail124} si můžeme všimnout, že váhy jsou podobné napříč různými umístěními stejných úkolů. Takové chování jsme pozorovali i u jiných kombinací úkolových dílků, na kterých jsme spustili evoluci pro konkrétní umístění. Váhy tedy bude efektivnější optimalizovat evolučním algoritmem pro danou kombinaci bez ohledu na umístění dílků z této kombinace. Váhy napříč různými kombinacemi se lišily nezanedbatelně, tedy optimalizovat váhy bez ohledu na výběr úkolů by nebylo efektivní.
+
+\tableEvolScore
+
+Evolučním agentem jsme testovali, zda si pro různá nastavení úkolových dílků nastaví různé parametry užitkové funkce, aby pro různé úkolové dílky dosahoval porovnatelných výsledků. To se však nestalo, evoluční agent sice různé kombinace zlepšil různou měrou, ovšem jak můžeme vidět na grafu \ref{graf}, zlepšení není úměrné výsledkům agenta s neváženou rozšiřující funkcí. Parametry pro jednotlivé úkolové dílky byly v různých kombinacích podobné, tedy se evoluční agent různým nastavením příliš nepřizpůsoboval. Různá umístění stejné kombinace úkolových dílků také neměla na optimální nastavení parametrů vliv.
+
+\plotPokus
+
+V tabulkách \ref{tab:weightedScore}, \ref{tab:weightedZetony} a \ref{tab:weightedTasks} porovnáváme výsledky agentů využívajících neváženou a váženou rozšířenou ohodnocující funkci. Výsledky s váženou funkcí jsou stejně jako pro neváženou funkci průměrovány přes hry s náhodně vybíranými úkoly. Pro každou kombinaci úkolů a jejich rozmístění si tedy agent zvolí váhy odpovídající danému umístění konkrétní kombinace úkolů.
+
+\tableWeightedDetailScore
+\tableWeightedDetailButtonsCats
+\tableWeightedDetailTasks
+
+
+
+\section{Agenti založení na stromovém prohledávání}
+
+\subsection{Běžné stromové prohledávání}
+
+Pro stromové prohledávání jsme testovali chování agenta s využitím prohledávání stromu hloubky 2 a hloubky 3 pro různé nastavení discount faktoru.
+V tabulce \ref{tab:testTS} vidíme již diskutované chování ohodnocení stromu pro nastavení $\gamma = 1$. Toto nastavení nám oproti jednokrokovému agentovi dá malé zlepšení, jelikož pro dvojici dílků, která nám přinese užitek, není její pořadí příliš podstatné. Pro strom s hloubkou 3 ovšem dostáváme výsledek horší než pro jednokrokového agenta, jelikož můžou nastat situace popsané v předchozí kapitole, kdy agent zvolí akci, která nám v budoucích krocích nemusí přinést užitek. Pro správně nastavený discount faktor však dosahujeme pro hlubší strom lepších výsledků. Dále tedy budeme pracovat s prohledáváním stromu hloubky až 3 s $\gamma = 0,9$
+
+\tableTreeSearchScoreTest
+
+Tabulky \ref{tab:TSscore}, \ref{tab:TSZetony} a \ref{tab:TSTasks} porovnávají výsledky využití vážené rozšířené funkce jednokrokově a v rámci stromového prohledávání s hloubkou stromu až 3 a $\gamma = 0,9$. Z tabulek vyplývá, že využití stromového prohledávání znatelně zlepší průměrný výsledek. Rozdíl u minimálního a maximálního skóre lze považovat za pouhou odchylku způsobenou náhodou ve hře.
+
+\tableTreeSearchDetailScore
+\tableTreeSearchDetailButtonsCats
+\tableTreeSearchDetailTasks
+
+\subsection{Stromové prohledávání s využitím simulací}
+
+Vzhledem k časové náročnosti výpočtu simulací jsme veškeré výsledky týkající se stromového prohledávání se simulacemi testovali pouze přes 250 her.
+
+Pro využití simulací jsme otestovali nakolik se výsledky změní pro různé hodnoty limitující větvení, jelikož větvení je jeden z klíčových aspektů časové náročnosti, jelikož je přímo úměrné počtu simulací ve stromu. V tabulce \ref{tab:MCTSBranching} jsou znázorněny výsledky pro simulace velikosti 5. Porovnáváme výsledky pro limit větvení stejný jako u běžného stromového prohledávání, tedy maximum z 5 a horní celé části poloviny volných polí a fixního limitu větvení na 5 podstromů. Z tabulky vyplývá že vyšší limit na větvení stromu nedosáhne znatelně lepšího výsledku a výrazně zvýší časovou složitost výpočtu, proto tedy nahradíme limit větvení ze základního prohledávání za fixní hodnotu 5. 
+
+\tableMCTSBranching
+
+V tabulce \ref{tab:MCTSSimulace} vidíme jak se liší průměrné skóre pro různé počty her zahrnuté v jedné simulaci. Pro vyšší počty jsem již tento přístup netestovala kvůli velké časové náročnosti.
+
+\tableMCTSScore
+
+Z tabulky \ref{tab:MCTSSimulace} můžeme vidět, že vyšší počty simulací dosahují lepších výsledků. Takové chování je očekávané, jelikož průměr přes více her bude méně ovlivněný náhodou při obnovování nabídky, tedy více směrodatný. Dále si můžeme všimnout, že zatímco změny v maximálních hodnotách skóre lze přičíst odchylce při testování, dosažená minimální skóre se pro vyšší počty simulací zvyšují.
+
+V tabulkách \ref{tab:MCTSscore}, \ref{tab:MCTSZetony} a \ref{tab:MCTSTasks} vidíme porovnání výsledků stromového prohledávání bez simulací a s nimi.    
+
+\tableMCTSDetailScore
+\tableMCTSDetailButtonsCats
+\tableMCTSDetailTasks
+
+
+ Simulace her v rámci stromového prohledávání jsou velmi časově náročné, což značně komplikuje testování této strategie. Pro využití agenta jako počítačového protihráče ve hře více hráčů však tato časová náročnost není na obtíž, jelikož vyhodnocení jednoho tahu ve hře proti lidskému hráči nevytváří prodlevu tak velkou, aby byla pro lidského hráče nepříjemná.
+

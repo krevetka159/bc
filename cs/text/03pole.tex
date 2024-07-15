@@ -1,0 +1,15 @@
+\chapter{Reprezentace herního pole}
+
+Pro implementaci hry je potřeba reprezentovat herní pole. Herní dílky mají šestiúhelníkový tvar, herní pole se tedy skládá z šestiúhelníkových políček. Potřebujeme tedy v reprezentaci zachovat to, že každá pozice sousedí se 6 dílky. Pro takovou reprezentaci využijeme dvojrozměrné pole, ve kterém budeme souřadnice sousedních dílků určovat zvlášť pro liché a sudé řádky. Množiny sousedních pozic pro pozici $(i,j)$ jsou vyjádřeny následovně:
+\begin{align*}
+    &\text{liché $i$: } \{(i-1,j-1),(i-1,j),(i,j-1),(i,j+1),(i+1,j-1),(i+1,j)\}\\
+    &\text{sudé $i$: } \{(i-1,j),(i-1,j+1),(i,j-1),(i,j+1),(i+1,j),(i+1,j+1)\}
+\end{align*}
+
+Dvourozměrné pole s tímto výpočtem sousednosti lze vyjádřit obrázkem \ref{fig:herniDeska}. Výpočtem jsme tedy vytvořili jakési posunutí sudých řádků, tedy každé políčko herního pole, které není krajní, má 6 sousedních pozic. Pro krajní políčka nemusíme funkci na výpočet sousednosti měnit, jelikož množinu sousedů využijeme pouze při vyhodnocení přidání dílku na danou pozici, což se krajních polí netýká, jelikož jsou na začátku hry již obsazené předem určenými herními dílky.
+
+\figureHerniDeska
+
+Světle šedá políčka tedy značí pozice, které jsou předvyplněné a v průběhu hry na ně nelze přidávat herní dílky. Tmavě šedou barvou jsou označena políčka, na které hráč na začátku hry umístí úkolové dílky.
+
+

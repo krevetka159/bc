@@ -1,0 +1,298 @@
+\chapter{Implementace agentů}
+
+\section{Značení}
+
+V rámci popisu implementovaných agentů budeme využívat následující značení pro dílky a jejich vlastnosti.
+\begin{align*}
+    &x                                   &\text{herní dílek}\\
+    &x_b                                 &\text{barva herního dílku}\\
+    &x_v                                 &\text{vzor herního dílku}
+\end{align*}
+
+Stav hry bude odpovídat hernímu poli. Akce bude odpovídat přiložení dílku na volnou pozici herní desky.
+\begin{align*}
+    &S                            &\text{stav hry} \\
+    &p = (i,j)                             &\text{pozice na herní desce, řádek $i$, sloupec $j$} \\
+    &a = (x,p)                             &\text{akce přiložení dílku $x$ na pozici $p$}
+\end{align*}
+
+Nabídka dílků v daném stavu bude vyjádřená v rámci množiny akcí aplikovatelných ve stavu $S$.
+\begin{equation*}
+    A(S) = \{(x_i,p) | i\in\{1,2,3\}, p \text{ volná v } S \}
+\end{equation*}
+\begin{equation*}
+    x_1, x_2, x_3 \text{ značí dílky v nabídce}
+\end{equation*}
+
+Ohodnocení akce ve stavu a strategii agenta budeme značit následovně:
+\begin{align*}
+    &R(a,S)                                &\text{ohodnocení provedení akce $a$ ve stavu $S$} \\
+    &\pi(S)                                &\text{strategie agenta ve stavu $S$}
+\end{align*}
+
+Pro jednotlivé žetony zavedeme značení pro jejich podmínky, tedy minimální velikost souvislých ploch, kterou je potřeba vytvořit pro jejich získání. Pro žetony a úkoly také využijeme následujícího značení reprezentující možný bodový zisk. Bodová ohodnocení a minimální velikosti ploch pro zisk žetonů jsou pevně dány pravidly hry.
+\begin{align*}
+    P_B&\in\mathbb{N}                                 &\text{velikost souvislého úseku pro zisk knoflíku} \\
+    P_v&\in\mathbb{N}                                 &\text{velikost souvislého úseku pro zisk žetonu kočky pro vzor $v$}\\
+    &&\\
+    B &\in \mathbb{N}                       &\text{bodové ohodnocení za zisk knoflíku}\\
+    V_v &\in \mathbb{N}                     &\text{bodové ohodnocení zisku kočky pro vzor } v\\
+    T^1_t &\in \mathbb{N}            &\text{bodové ohodnocení pro pouze částečné splnění úkolu $t$}\\
+    T^2_t &\in \mathbb{N}            &\text{bodové ohodnocení pro kompletní splnění úkolu $t$}
+\end{align*}
+
+Značení pro žetony knoflíků a koček jsou rozdílné, jelikož pravidla a bodový zisk pro žeton knoflíku není vázaný na konkrétní barvu, u žetonu kočky záleží na konkrétním vzoru.
+
+Pro ohodnocení z hlediska barev budeme potřebovat znát součty velikostí souvislých ploch sousedících s pozicí $p$ ve stavu $S$ a počet jednotlivých žetonů, které při provedení akce v daném stavu získáme
+\begin{align*}
+    &N_b(p,S)\in\mathbb{N}_0               &\text{součet sousedících ploch pro barvu $b$}\\
+    &N_v(p,S)\in\mathbb{N}_0               &\text{součet sousedících ploch pro vzor $v$}\\ 
+    &b_{a, S} \in \{0,1,2\}             &\text{počet knoflíků získaných provedením $a$ v $S$}\\
+    &v_{a, S} \in \{0,1\}               &\text{počet žetonů kočky získaných provedením $a$ v $S$}
+\end{align*}
+
+Pro vyhodnocení úkolu potřebujeme vědět, kolik polí kolem je již obsazeno herními dílky a který úkol sousedí s pozicí, na kterou provedením akce přidáme dílek.
+\begin{align*}
+    &N_t(S)\in\mathbb{N}_0 &\text{počet obsazených pozic kolem úkolu $t$ ve stavu $S$}\\
+    &T(p) &\text{množina úkolů sousedících s pozicí $p$}
+\end{align*}
+
+\section{Jednokrokoví agenti}
+
+Jednokrokoví agenti pro své strategie využívají tzv. hladový přístup. To znamená, že v každém stavu zvolí tu akci, která má nejvyšší ohodnocení, bez ohledu na to, jak tato akce ovlivní jeho následující kroky.
+
+Pro porovnání efektivity různých přístupů jsme implementovali náhodného agenta (RAND). Strategie tohoto agenta je tedy v každém svém kroku uniformně náhodně zvolit jeden herní dílek z nabídky a přiložit ho na uniformně náhodně vybrané políčko herní desky.
+
+\subsection{Základní ohodnocení}
+
+V základním ohodnocení se budeme soustředit zejména na body, které daná akce přímo získá. Budeme také zohledňovat, zda daná akce přispívá k zisku žetonu nebo splnění úkolu pomocí konstanty.
+
+Ohodnocení provedení akce ve stavu budeme vyhodnocovat zvlášť z hlediska barev, vzorů a úkolů. 
+
+Pro barvy \ref{eq:zakladBarva} a vzory \ref{eq:zakladVzor} bude ohodnocením počet získaných bodů, pokud provedení této akce získá hráči odpovídající žeton. Pokud je dílek přikládán k již existující ploše stejné barvy/vzoru, která doposud nezískala žádný žeton, ohodnotíme danou akci 1. Při přiložení k ploše, která již žeton získala, ohodnotíme akci 0, stejně jako přiložení dílku na pozici, se kterou nesousedí žádný dílek stejné barvy/vzoru.
+\begin{align}
+     R_{ZB}((x,p),S) &= 
+    \begin{cases}
+        1              &0 < N_{x_b}(p,S) < P_b-1\\
+        B\cdot b_{a,S} &\text{jinak}
+        \label{eq:zakladBarva}\\
+    \end{cases}& \\
+    R_{ZV}((x,p),S) &= 
+        \begin{cases}
+            1           &0 < N_{x_v}(p,S) < P_{x_v}-1\\
+            V_{x_v}     &\text{jinak}
+            \label{eq:zakladVzor}\\
+        \end{cases}&
+\end{align}
+
+Pro ohodnocení úkolů musíme vzít v potaz dvojitý systém bodování, tedy zisk bodů podle toho, zda byla podmínka splněna zcela (barvy i vzory) nebo pouze částečně (pouze barva nebo pouze vzor). V případě že podmínka byla splněna, ohodnotíme akci odpovídajícím počtem bodů. Pokud o provedení akce nejsou zaplněna všechny políčka sousedící s úkolem a úkol je stále splnitelný z obou částí, ohodnotíme akci 2, pokud je splnitelný pouze částečně, ohodnotíme akci 1. Pokud již úkol není splnitelný, ohodnotíme akci 0.
+\begin{equation}
+    \forall t \in T(p): R_{Zt}((x,p),S) =
+    \begin{cases}
+        0           &N_t(S) = 0 \wedge \text{$t$ již není splnitelný}\\
+        1           &N_t(S) < 6 \text{ a $t$ splnitelný pouze částečně}\\
+        2           &N_t(S) < 6 \text{ a $t$ stále splnitelný}\\
+        T_t^1       &\text{$t$ splněn pouze částečně}\\
+        T_t^2       &\text{$t$ splněn}\\
+    \end{cases}
+\end{equation}
+
+Základní ohodnocení jsme testovali samostatně pro barvy a vzory. 
+Agent pro ohodnocení barev/vzorů tedy používá strategii, se kterou v každém stavu vybere tu akci, která má nejvyšší ohodnocení z hlediska barev nebo z hlediska vzorů. Pokud existuje více akcí s maximálním ohodnocením, vybere si libovolnou z nich.
+\begin{align}
+    \pi_B(S) &= \{a\ |\ R_ZB(a,S) \text{ je maximální}\} \\
+    \pi_V(S) &= \{a\ |\ R_ZV(a,S) \text{ je maximální}\}
+\end{align}
+
+Ohodnocení z hlediska úkolů jsme samostatně netestovali, jelikož se nevztahuje na všechna políčka herní desky.
+
+Základní agent v rámci ohodnocování akcí kombinuje ohodnocení všech parametrů. V rámci své strategie vybírá akci, která má pro daný stav nejvyšší součet ohodnocení všech 3 parametrů.
+\begin{equation}
+    R_Z((x,p),S) = R_{ZB}((x,p),S) + R_{ZV}((x,p),S) + \sum_{t \in T(p)} R_{Zt}((x,p),S)
+\end{equation}
+\begin{equation}
+    \pi_Z(S) = \{a\ |\ R_Z(a,S) \text{ je maximální}\}
+\end{equation}
+
+\subsection{Rozšířené ohodnocení}
+
+Základní ohodnocení lze rozšířit o zohledňování zisku žetonů s vyšším bodovým ohodnocením při vytvoření větších souvislých ploch. Základní ohodnocení tyto situace nerozlišuje, jelikož při budování souvislých ploch pro zisk žetonů přičítá ve všech případech vždy stejnou konstantu. Budování větších ploch tedy zohledníme tak, že v případě, který by byl ohodnocen 1, ohodnotíme velikostí souvislé plochy. Jelikož velikost souvislé plochy může být stejná jako bodový zisk některých žetonů, v případě získání žetonu přičteme k bodovému zisku 1.
+\begin{align}
+     R_{RB}((x,p),S) &= 
+    \begin{cases}
+        B\cdot b_{a,S} + 1    & b_{a,S} > 0 \\
+        N_{x_b}(p,S)          & 0 < N_{x_b} < P_b\\
+        0                     & \text{jinak}
+        \label{eq:rozsireniBarva}\\
+    \end{cases} \\
+    R_{RV}((x,p),S) &= 
+        \begin{cases}
+            V_{x_v} + 1       & v_{a,S} = 1\\
+            N_{x_v}(p,S)      & 0 < N_{x_v} < P_{x_v}\\
+            0                 & \text{jinak}
+            \label{eq:rozsireniVzor}
+        \end{cases}
+\end{align}
+
+Podobně upravíme i ohodnocení z hlediska plnění úkolů, aby také průběžně zohledňovalo počet bodů, které můžeme splněním úkolu získat.
+\begin{equation}
+    \forall t \in T(p): R_{Rt}((x,p),S) =
+    \begin{cases}
+        0                                           & \text{nesplnitelné} \\
+        \frac{1}{6}\cdot T_t^1 \cdot (N_t(S)+1)     & \text{splnitelné pouze částečně}\\
+        \frac{1}{6}\cdot T_t^2 \cdot (N_t(S)+1)     & \text{splnitelné}\\
+    \end{cases}
+\end{equation}
+
+Agent tedy může využít strategii, se kterou v každém stavu vybere tu akci, která má nejvyšší součet rozšířeného ohodnocení pro všechny 3 aspekty.
+\begin{equation}
+    R_R((x,p),S) = R_{RB}((x,p),S) + R_{RV}((x,p),S) + \sum_{t\in T(p)}R_{Rt}((x,p),S)
+\end{equation}
+\begin{equation}
+    \pi_R(S) = \{a\ |\ R_R(a,S) \text{ je maximální}\}
+\end{equation}
+
+\subsection{Přidání náhody}
+
+Jednokrokový agent používá hladovou strategii, což znamená, že si může v rámci vybírání lokálně nejlepších možností zabránit k získání lepších finálních výsledků. Otestuji tedy také strategii, která s vysokou pravděpodobností použije strategii využívající rozšířenou ohodnocující funkci, jinak použije strategii náhodného agenta.
+\begin{equation}
+    \pi_p(S) = 
+    \begin{cases}
+        \pi_{RAND} & \text{s pravděpodobností } p\\
+        \pi_{R}(S) & \text{jinak}
+    \end{cases}
+\end{equation}
+
+
+\section{Evoluční algoritmus}
+
+Rozšířená ohodnocující funkce jednokrokového agenta sčítá několik různých ohodnocení podle jednotlivých parametrů tak, že každému z hodnocených parametrů přisuzuje stejnou váhu. Pomocí evolučního algoritmu se pokusíme nastavit váhy pro jednotlivé parametry tak, aby jednokrokový agent dosáhl lepších výsledků.
+
+Pro každou bodovou kategorii použijeme jednu váhu, tedy ohodnocení podle vzorů nebude vážené jednou váhou, ale třemi, pro každý různě bodově ohodnocený žeton zvlášť. Úkolové dílky také budou váženy každý zvlášť, jelikož každý nabízí jiné bodové ohodnocení. Pro vyhodnocení podle barev se nabízí použít stejnou váhu jako pro vyhodnocení podle vzorů, které jsou ohodnoceny 3 body, jelikož se na ně vztahují i stejné požadavky. Zisk knoflíků však nabízí i zisk speciálního žetonu duhový knoflík, čímž se od daného vzorového ohodnocení liší. Pro ohodnocení podle barev tedy také použijeme separátní váhu.
+
+Vážená rozšířená ohodnocující funkce bude tedy vypadat následovně:
+
+\begin{equation}
+R_W(x,p),S) = w_BR_{RB}((x,p),S) + w_{x_v} R_{RV}((x,p),S) + \sum_{t\in T(p)}w_tR_{Rt}((x,p),S)
+\end{equation}
+\begin{align*}
+    w_b &\in \mathbb{R}      &\text{váha pro knoflíky}  \\
+    w_v &\in \mathbb{R}      &\text{váha pro žeton kočky pro vzor $v$}   \\
+    w_t &\in \mathbb{R}      &\text{váha pro úkolového dílku $t$}  
+\end{align*}
+
+Díky mutaci, kterou jsme v evolučním algoritmu implementovali, jsme v poslední populaci získali jedince, kteří sice dosahují podobných výsledků, ovšem jejich váhy se drobně liší. Pro danou kombinaci dílku jsme tedy pro každé umístění dané kombinace otestovali, který z jedinců výsledné populace maximalizuje bodový zisk pro konkrétní umístění kombinace. To jsme provedli spuštěním 5000 her agenta s rozšiřující funkcí váženou hodnotami daného jedince.
+Váhy pro různá umístění stejné kombinace jsou tedy lehce odlišné, přestože jsou výsledkem stejného evolučního algoritmu.
+
+\subsection{Průběh evoluce}
+
+\subsubsection*{Reprezentace jedince}
+Jedinec obsahuje 10 číselných hodnot, které odpovídají jednotlivým vahám ohodnocující funkce.
+
+\subsubsection*{Inicializace}
+
+Jako možnost se nabízí inicializovat populaci se všemi váhami nastavenými na 1 a nechat je zkonvergovat, tato možnost se ovšem neukázala být příliš efektivní, vzhledem k délce výpočtu. Různým testováním jsme nakonec dospěli k inicializaci populace, jejíž první polovina má váhy inicializované uniformně náhodně z intervalu [0,1]. Druhá polovina populace má váhy získané přičtením náhodného čísla, které je generováno z normálního rozdělení se střední hodnotou 0 a rozptylem 0,1, k číslu 1.
+
+\subsubsection*{Fitness funkce}
+Pro kombinaci úkolových dílků s pevně daným umístěním použijeme pro hodnotu fitness funkce průměrné skóre přes 1000 her jednokrokového agenta $A_R$. Pro kombinaci bez ohledu na umístění tuto hodnotu spočítáme jako průměr přes 1200 her, 200 pro každé umístění. Počet her potřebných pro spočítání hodnoty fitness funkce je hlavním důvodem, proč je evoluční algoritmus časově náročný, pro nižší počty her však hodnota fitness funkce kvůli množství náhody ve hře nebyla dostatečně směrodatná.
+
+\subsubsection*{Selekce}
+Algoritmus používá turnajovou selekci s hranicí nastavenou na 80\%, tedy ze dvou náhodně vybraných jedinců z populace s pravděpodobností 80\% vybereme do nové populace toho, který dosáhl lepších výsledků.
+
+\subsubsection*{Genetické operátory}
+Mutaci aplikujeme na každý parametr každého jedince, tedy parametr pravděpodobnosti mutace je 1. Využíváme Gaussovskou mutaci, tedy ke stávající hodnotě přičítáme náhodné číslo z normálního rozdělení se střední hodnotou 0 a rozptylem 0,01. Jedná se tedy o zatíženou mutaci. Operaci křížení nepoužíváme.
+
+\subsection{Přehled nastavení parametrů evoluce}
+
+Velikost populace = 200
+
+Počet generací = 200
+
+Pravděpodobnost v turnajové selekci = 0,8
+
+Pravděpodobnost mutace = 1
+
+
+\section{Stromové prohledávání stavového prostoru}
+Hladový agent nejenže nezohledňuje budoucí kroky ve hře, nezohledňuje ani ostatní dílky v nabídce. 
+Na obrázku \ref{fig:omezeniHladovehoPristupuPriklad} vidíme stav hry zjednodušený tak, aby ukazoval pouze barvy herních dílků. Pokud máme v tomto stavu hry na výběr k přiložení dva modré a jeden žlutý dílek, hladový agent může vybrat jakýkoliv z těchto dílků, jelikož maximálně ohodnocená akce přiložení každého z dílků má stejné ohodnocení. Například pro každý dílek dosáhne funkce ohodnocení akce svého maxima pro přiložení na pole $p_2$. Hladový agent již nezohlední to, že při výběru jednoho z modrých dílků máme v dalším kroku garantovanou možnost zisku knoflíku, při výběru žlutého dílku se nám možnost zisku knoflíku už nemusí naskytnout.
+
+\figureOmezeniHladovehoPristupuPriklad
+
+Nabízí se tedy možnost vybudovat strom stavů, jehož každá větev reprezentuje posloupnost umístění nabízených dílků na různé pozice herní desky. Takový strom hloubky 3 bude obsahovat $3!\cdot n \cdot(n-1) \cdot(n-2) + 1$ vrcholů, kde $n$ je počet volných pozic herní desky ve stavu reprezentovaném kořenem stromu. Na obrázku \ref{fig:strom} vidíme část stromu reprezentující situaci popsanou v předchozím příkladě.
+
+\figureStrom
+
+\subsection{Ořezávání}
+
+Procházení všech možností umístění je časově náročné a často prozkoumávám větve, které nejsou příliš perspektivní. Jako jednoduché řešení se nabízí zahazovat stavy, do kterých se dostanu akcí s nulovým ohodnocením. Takových akcí je ale zanedbatelné množství, takže se takové řešení na časové náročnosti výpočtu neprojeví. 
+Jako lepší přístup se ukázalo být limitování počtu nejlepších umístění pro každý dílek, které prozkoumám. Tím zrychlím výpočet a pro správně nastavený počet nejlepších umístění ovlivním průměrné výsledky pouze zanedbatelně.
+Počet chci nastavit tak, abych pro velké množství volných pozic prozkoumala dostatečný počet všech možností, protože je pravděpodobné, že mnoho pozic bude mít stejné ohodnocení. Pro pozdější fáze hry chci prozkoumat co největší procento volných polí.
+
+Jako velmi efektivní se ukázalo limitovat větvení na $\max \{\lceil\frac{n}{2}\rceil ,5\}$ podstromů, kde $n$ značí počet volných pozic na herní desce v daném stavu. Pro velké množství volných pozic prozkoumám polovinu volných polí, jelikož ze začátku hry může mít mnoho pozic podobné ohodnocení. V pozdějších fázích hry, kdy nám již volných pozic mnoho nezbývá, prozkoumám větší část herního pole než pouhou polovinu.
+
+\figureTS
+
+\textbf{Popis obrázku}
+
+\textbf{posloupnost stavů S0, S1, ...}
+
+\textbf{akce a = (xi, pj)}
+
+\textbf{omezení k,l,n-2}
+
+\subsection{Ohodnocování}
+
+Každá cesta od kořene do listu reprezentuje posloupnost akcí, jejich provedením postupně přiložíme na desku všechny 3 dílky z nabídky. Každou cestu ohodnotíme součtem ohodnocení provedení akcí ve stavech daných předchozími akcemi z posloupnosti \ref{eq:TS}. 
+\begin{equation}
+    U(S_0,S_1,S_2,S_3) = R_W(a_1,S_0) + \gamma R_W(a_2,S_1) + \gamma^2 R_W(a_3,S_2) \label{eq:TS}
+\end{equation}
+\begin{align*}
+    &\forall i \in \{1,2,3\}: a_i \in A(S_{i-1}): S_{i-1},a_i \rightarrow S_i\\
+    &\gamma\in(0,1) \text{ discount faktor}
+\end{align*}
+
+K ohodnocení akce použijeme váženou rozšířenou funkci implementovanou pro hladového agenta. Pro druhý a třetí krok ohodnocení vynásobíme konstantou, tzv. discount faktorem, který nám zaručí, že budeme nejvíce zohledňovat ohodnocení prvního kroku. Pokud bychom discount faktor nepoužili, měly by obě cesty zobrazené ve stromu \ref{fig:strom} stejné ohodnocení a agent by mohl začít přiložením žlutého dílku, přestože by možná žlutý dílek díky obnově nabídky nemuselo vůbec být výhodné použít.
+\begin{equation}
+    U_{TS}(S_1) = \max_{a_2\in A(S_1), a_3 \in A(S_2)} U(S_0,S_1,S_2,S_3)
+\end{equation}
+
+\begin{equation}
+    \pi^*(S_0) = \arg\max_{a_1\in A(S_0)} U_{TS}(S_1)
+\end{equation}
+
+Ohodnocení \ref{eq:TS} je různě efektivní pro různé hodnoty $\gamma$. V rámci experimentů jsem vyzkoušela několik hodnot a v kapitole Výsledky uvidíme, že agent dosahoval nejlepších výsledků pro $\gamma = 0,9$.
+
+
+\section{Monte Carlo tree search}
+
+MCTS je používán zejména na dynamické ořezávání, tedy využití náhodných simulací k určování, které větve stojí za to prozkoumat. V našem případě máme strom s omezenou hloubkou na 3 kroky, ovšem s velkým větvením. Pro MCTS to tedy znamená, že pro vyhodnocení akcí z jednoho stavu ($3n$ pro $n$ počet volných pozic), musí provést daný počet simulací, které jsou časově náročnější než pouhé ohodnocení provedení těchto akcí. Tento přístup tedy nebude příliš vhodný, jelikož bude velmi časově náročný. Koncept náhodné simulace nám však může pomoci zohledňovat v rámci vyhodnocení i akce, které předem neznáme, tedy akce přiložení dílku, který zatím nemáme ve známých možnostech.
+
+\subsection{Využití konceptů MCTS}
+
+Do stromové reprezentace hry od určitého stavu dál přidáme nové listy reprezentující náhodné simulace. Tyto listy připojíme ke všem vrcholům, které reprezentují stavy, pro které neznáme všechny možné akce, tedy pro každý vrchol kromě kořene. Pro každý takový vrchol přidáme pouze jeden list.
+Ohodnocení dané cesty z kořene pak bude odpovídat ohodnocení simulace, kterou tato cesta končí. Každá cesta končí simulací, jiné listy strom neobsahuje.
+
+Strategie agenta využívajícího tento přístup bude zvolit takovou akci, která je prvním krokem na cestě z kořene do nejvýše ohodnoceného listu. 
+
+\subsection{Simulace}
+
+Simulacemi budeme nejen ohodnocovat posloupnost akcí reprezentovanou jednou větví stromu, ale také jimi nahradíme akce, které předem neznáme, tedy akce pro zatím neznámé možnosti dílků ve druhém a třetím kroku.
+
+V simulaci odehraje hladový agent s váženou funkcí několik her z daného stavu do konce. Ohodnocením simulace pak bude průměrné skóre agenta v těchto hrách. Pouze jedna hra v simulaci nestačí, protože skóre pouze jedné hry není v důsledku množství náhody ve výběru možností pro výběr dílku příliš určující.
+
+Čím více her provedeme v jedné simulaci, tím je však vyhodnocení pomalejší. V následující kapitole v tabulce \ref{tab:MCTSSimulace} uvidíme, že pro vyšší počty simulací roste i průměrné dosažené skóre agenta. Pro více než 75 her v simulaci již vyhodnocení běželo příliš dlouho. Pro zrychlení vyhodnocení jsme omezili ořezávání fixně pouze na 5 nejlepších pozic pro umístění dílku, pokud je volných pozic méně, prozkoumáme je všechny.
+
+\figureMCTS
+
+\textbf{černé čtverce = simulace}
+
+\textbf{omezení k,l,m}
+
+\section{Možná rozšíření pro hru více hráčů}
+
+Agent může volit nastavení hry, které mu pravděpodobněji přinese větší užitek, ale může pak dojít k odhalení této analýzy hráči, což nemusí být žádoucí. 
+
+Upravit stromové prohledávání a simulace pro hru více hráčů, např. pro hru 4 hráčů je nepravděpodobné, že z nabídky, které je nám dostupná, využijeme více než 1 dílek. tedy např. využití simulace hned po prvním kroku -> hloubka stromu 1
+
+Agresivnější strategie, tzn zahrnutí do ohodnocení akce její ohodnocení pro provedení v tahu soupeře, tedy rozhodovat se částečně i tak, abychom uškodili protihráči. 

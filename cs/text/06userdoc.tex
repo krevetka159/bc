@@ -1,0 +1,57 @@
+\chapter{Uživatelská dokumentace}
+
+\todo[inline]{Program je spustitelný .exe souborem or sth.
+Konzolová aplikace je určena zejména pro testování různých nastavení hry a strategií počítačového hráče. Uživatel si také v aplikaci může vyzkoušet hru v sólové verzi. Na obrázku \ref{fig:konzole} vidíme počáteční stav konzole po spuštění a základní módy, ze kterých si uživatel může vybrat. Výběr módu uživatel provede zadáním čísla, které odpovídá danému módu.}
+
+\figureKonzole
+
+Aplikace provází uživatele výběrem módu a zadáním potřebných i volitelnými parametry pomocí vysvětlivek. Na obrázku xy můžeme vidět, jakým způsobem uživatel s konzolí komunikuje? idk.
+
+\section{Testovací módy}
+
+V rámci aplikace máme k dispozici několik testovacích módů. 
+
+Pro všechny testovací módy si má uživatel možnost zvolit, zda chce výsledky testu vytisknout do souboru. Pokud ano, program ho požádá o vyplnění názvu souboru. Pokud ne, program výsledek pouze vytiskne do konzole.
+
+\subsection{Testování agentů}
+Pro testování agentů zvolíme, kterého z agentů chceme testovat. V konzoli uvidíme seznam agentů, které jsme popsali v předchozí kapitole. Pro výběr agenta zadáme číslo, které mu odpovídá. Na základě výběru agenta program uživatele požádá o vyplnění dalších parametrů.
+
+Pro jednokrokové agenty není potřeba zadat žádné parametry testování. V případě testování agentů, kteří využívají stromové prohledávání bez simulací je potřeba zadat limit pro hloubku stromu a discount faktor. V případě prohledávání se simulacemi je potřeba zadat počet her, které budou tvořit jednu simulaci. 
+
+V případě, že uživatel zvolí možnost vypsání výsledků do souboru, se do souboru data zapíší ve formátu běžném pro .csv soubor. Na obrázku xy vidíme soubor, ve kterém jsou zapsána data z testování náhodného agenta. Jedna řádka souboru odpovídá jedné hře, kterou agent odehrál. Pro každou hru program uchová informace o dosaženém skóre, získaných žetonech a splněných úkolech.
+
+\textbf{Zapsat co znamenají ty jednotlivé sloupce}
+
+
+\subsection{Evoluční algoritmus}
+
+Po zvolení módu pro evoluční algoritmus uživatel zadá, pro které úkolové dílky chce optimalizovat. Dále zvolí, zda chce tuto kombinaci použít s konkrétním umístěním. Při výběru této možnosti umístění odpovídá pořadí, v jakém byly úkoly uživatelem zapsány. První úkol bude umístěn na místo ve třetím řádku, druhý úkol na místo ve čtvrtém řádku a poslední úkol na místo na pátém řádku herní desky.
+
+Výsledek evolučního algoritmu je potřeba vytisknout do souboru. Do uživatelem zvoleného souboru program po ukončení optimalizace vah do souboru vypíše všechny jedince finální generace s hodnotou jejich fitness funkce jak je zobrazeno na obrázku 420.
+
+\subsection{Testování nastavení hry}
+
+V rámci testování různých nastavení hry má uživatel možnost otestovat výsledky agenta s neváženou rozšířenou ohodnocující funkcí (agent č. 5) pro pevně dané úkolové dílky a číslo herní desky. Pro úkolové dílky taky může zvolit, zda je chce testovat s pevně daným umístěním na desce. Oba tyto parametry jsou volitelné, v případě, že uživatel nechce zadat konkrétní nastavení, program otestuje všechny dvojice herní desky a kombinace úkolů.
+
+Výsledkem testování pro dané nastavení je pouze průměrné skóre, kterého agent s daným nastavením dosáhl. Výpis dat do souboru je volitelný.
+
+\section{Herní mód}
+
+Barvy jsou kódovány čísly 1-6, vzory velkými písmeny A-F.
+Prázdná políčka jsou označena -{}-.
+Políčka označená XX jsou určená pro úkolové dílky.
+
+Na začátku hry uživatel postupně vybere, které úkolové dílky chce umístit na svou hrací plochu. 
+
+\figureUkoly
+
+V každém kole hry se v konzoli znovu vytiskne stav hry. Nějaký obrázek kde je popsané co je co
+1. Dílky k použití
+2. Bodování pro jednotlivé vzory
+3. Průběžné skóre
+4. Hrací deska
+5. Instrukce pro provedení dalšího tahu
+
+Pro přidání herního dílku na hrací desku hráč zadá číslo 1-3 které odpovídá dílku v nabídce a následně zadá číslo řádku a sloupce pozice, na kterou chce daný dílek umístit.
+
+\figureSinglePlay
